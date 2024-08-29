@@ -1,0 +1,17 @@
+{
+    "subsystems": [
+        {
+            "subsystem": "bdev",
+            "config": [
+                {
+                    "params": {
+                        "filename": "/home/tianceli/CloudOS/Lab3/bdev.img",
+                        "block_size": 512,
+                        "name": "bdev0"
+                    },
+                    "method": "bdev_uring_create"
+                }
+            ]
+        }
+    ]
+}

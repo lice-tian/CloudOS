@@ -1,0 +1,27 @@
+-------part1-------
+
+./stratovirt/target/release/stratovirt -machine microvm -smp 1 -m 1024 -kernel ./vmlinux.bin -append "console=ttyS0 root=/dev/vda reboot=k panic=1" -drive file=./openEuler-21.03-stratovirt-x86_64.img,id=rootfs,readonly=off -device virtio-blk-device,drive=rootfs,id=rootfs -qmp unix:stratovirt.sock,server,nowait -serial stdio
+
+qemu-system-x86_64 -machine q35 -smp 1 -m 1024 -drive file=openEuler-21.03-x86_64.qcow2,if=virtio -qmp unix:stratovirt.sock,server,nowait --enable-kvm -curses
+
+-------part2-------
+
+./stratovirt/target/release/stratovirt -machine microvm -smp 1 -m 1024 -kernel ./vmlinux.bin -append "console=ttyS0 root=/dev/vda reboot=k panic=1" -drive file=./openEuler-21.03-stratovirt-x86_64.img,id=rootfs,readonly=off -device virtio-blk-device,drive=rootfs,id=rootfs -qmp unix:stratovirt.sock,server,nowait -serial stdio
+
+qemu-system-x86_64 -machine q35 -smp 1 -cpu host -m 1024 -drive file=openEuler-21.03-x86_64.qcow2,if=virtio -qmp unix:stratovirt.sock,server,nowait --enable-kvm -curses
+
+-------cpu性能对比-------
+
+./stratovirt/target/release/stratovirt -machine microvm -smp 1 -m 1024 -kernel ./vmlinux.bin -append "console=ttyS0 root=/dev/vda reboot=k panic=1" -drive file=./openEuler-21.03-stratovirt-x86_64.img,id=rootfs,readonly=off -device virtio-blk-device,drive=rootfs,id=rootfs -qmp unix:stratovirt.sock,server,nowait -serial stdio
+
+qemu-system-x86_64 -machine q35 -smp 1 -cpu host -m 1024 -drive file=openEuler-21.03-x86_64.qcow2,if=virtio -qmp unix:stratovirt.sock,server,nowait --enable-kvm -curses
+
+-------cpu性能对比-------
+
+
+
+sysbench fileio --time=60 --threads=1 --file-block-size=4K --file-test-mode=rndrd prepare
+
+sysbench fileio --time=60 --threads=32 --file-block-size=128K --file-test-mode=rndrd prepare
+
+sysbench fileio --time=60 --threads=32 --file-block-size=4K --file-test-mode=rndrd prepare
